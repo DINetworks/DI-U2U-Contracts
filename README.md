@@ -1,5 +1,5 @@
 <a href="https://u2u.network">
-    <img alt="logo" src="https://github.com/U2U-Network/U2U-Contracts/blob/main/docs/IU2U-banner.png" style="width: 100%;">
+    <img alt="logo" src="https://github.com/DINetworks/DI-U2U-Protocol/blob/main/IU2U-Banner.png" style="width: 100%;">
 </a>
 
 ## IU2U Cross-Chain Protocol
