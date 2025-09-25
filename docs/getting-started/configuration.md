@@ -1,38 +1,58 @@
 # Configuration
 
-Learn how to configure IU2U Protocol for different environments and use cases.
+Learn how to configure IU2U Protocol's integrated **Gasless Meta Transactions** and **IU2U Cross-Chain Protocol** systems for different environments and use cases.
 
 ## Environment Configuration
 
 ### Network Configurations
 
-IU2U supports multiple networks with different configurations:
+IU2U supports multiple networks with configurations for both gasless transactions and cross-chain operations:
 
 ```javascript
 const networkConfigs = {
-  mainnet: {
+  testnet: {
+    'u2u-nebulas-testnet': {
+      chainId: 2484,
+      rpcUrl: 'https://rpc-nebulas-testnet.uniultra.xyz/',
+      nativeCurrency: { name: 'U2U', symbol: 'U2U', decimals: 18 },
+
+      // Gasless Meta Transaction contracts
+      metaTxGateway: '0x...',
+      gasCreditVault: '0x...',
+
+      // IU2U Cross-Chain contracts
+      iu2uGateway: '0x...',
+      iu2uToken: '0x...',
+      crossChainAggregator: '0x...'
+    },
     ethereum: {
       chainId: 1,
       rpcUrl: 'https://mainnet.infura.io/v3/YOUR_PROJECT_ID',
+      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+
+      // Gasless Meta Transaction contracts
+      metaTxGateway: '0x...',
+      gasCreditVault: '0x...',
+
+      // IU2U Cross-Chain contracts
       iu2uGateway: '0x...',
-      aggregator: '0x...'
+      iu2uToken: '0x...',
+      crossChainAggregator: '0x...'
     },
     bsc: {
       chainId: 56,
       rpcUrl: 'https://bsc-dataseed1.binance.org/',
+      nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+
+      // Gasless Meta Transaction contracts
+      metaTxGateway: '0x...',
+      gasCreditVault: '0x...',
+
+      // IU2U Cross-Chain contracts
       iu2uGateway: '0x...',
-      aggregator: '0x...'
-    },
-    // ... other networks
-  },
-  testnet: {
-    sepolia: {
-      chainId: 11155111,
-      rpcUrl: 'https://sepolia.infura.io/v3/YOUR_PROJECT_ID',
-      iu2uGateway: '0x...',
-      aggregator: '0x...'
-    },
-    // ... other testnets
+      iu2uToken: '0x...',
+      crossChainAggregator: '0x...'
+    }
   }
 };
 ```
@@ -42,29 +62,61 @@ const networkConfigs = {
 #### Basic Configuration
 
 ```javascript
-import { IU2UProvider } from '@iu2u/sdk';
+import {
+  IU2UProvider,
+  GasCreditVault,
+  MetaTxGateway,
+  CrossChainAggregator
+} from '@iu2u/sdk';
 
 const iu2u = new IU2UProvider({
-  network: 'mainnet', // or 'testnet'
+  network: 'testnet', // Use testnet for development
   provider: window.ethereum,
   signer: signer,
-  
+
+  // Gasless Meta Transaction settings
+  gasless: {
+    enabled: true,
+    relayerUrl: 'https://relayer.iu2u.com',
+    gasCreditVault: '0x...', // GasCreditVault contract address
+    metaTxGateway: '0x...', // MetaTxGateway contract address
+    supportedTokens: ['USDC', 'USDT', 'IU2U'], // Tokens for gas credits
+    minimumConsume: ethers.utils.parseEther('0.05') // $0.05 minimum
+  },
+
+  // IU2U Cross-Chain settings
+  crossChain: {
+    enabled: true,
+    iu2uGateway: '0x...', // IU2UGateway contract address
+    iu2uToken: '0x...', // IU2U token address
+    aggregator: '0x...', // CrossChainAggregator address
+    supportedChains: ['ethereum', 'bsc', 'polygon', 'u2u-nebulas-testnet']
+  },
+
   // Optional configurations
   defaultSlippage: 50, // 0.5%
   defaultDeadline: 1800, // 30 minutes
   gasPrice: 'fast', // 'slow', 'standard', 'fast'
-  
-  // Relayer configuration
-  relayerUrl: 'https://relayer.iu2u.com',
-  enableGasless: true,
-  
-  // DEX preferences
-  preferredDEXes: ['uniswap-v3', 'sushiswap-v2'],
-  excludedDEXes: ['deprecated-dex'],
-  
+
   // Logging
   debug: false,
   logLevel: 'info' // 'error', 'warn', 'info', 'debug'
+});
+
+// Initialize individual components
+const gasVault = new GasCreditVault({
+  provider, signer,
+  contractAddress: iu2u.config.gasless.gasCreditVault
+});
+
+const metaTxGateway = new MetaTxGateway({
+  provider, signer,
+  contractAddress: iu2u.config.gasless.metaTxGateway
+});
+
+const aggregator = new CrossChainAggregator({
+  provider, signer,
+  contractAddress: iu2u.config.crossChain.aggregator
 });
 ```
 
@@ -223,28 +275,40 @@ const routerConfigs = {
 
 ```bash
 # Network RPC URLs
+U2U_TESTNET_RPC_URL=https://rpc-nebulas-testnet.uniultra.xyz/
 ETHEREUM_RPC_URL=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
 BSC_RPC_URL=https://bsc-dataseed1.binance.org/
 POLYGON_RPC_URL=https://polygon-mainnet.infura.io/v3/YOUR_PROJECT_ID
 
-# Private Keys (for deployment)
+# Private Keys (for deployment and relaying)
 DEPLOYER_PRIVATE_KEY=0x...
 RELAYER_PRIVATE_KEY=0x...
+USER_PRIVATE_KEY=0x...
 
-# Contract Addresses
+# Gasless Meta Transaction Contracts
+METATX_GATEWAY_U2U_TESTNET=0x...
+METATX_GATEWAY_ETHEREUM=0x...
+GAS_CREDIT_VAULT_U2U_TESTNET=0x...
+GAS_CREDIT_VAULT_ETHEREUM=0x...
+
+# IU2U Cross-Chain Contracts
+IU2U_GATEWAY_U2U_TESTNET=0x...
 IU2U_GATEWAY_ETHEREUM=0x...
-IU2U_GATEWAY_BSC=0x...
+IU2U_TOKEN_U2U_TESTNET=0x...
+IU2U_TOKEN_ETHEREUM=0x...
+CROSSCHAIN_AGGREGATOR_U2U_TESTNET=0x...
 CROSSCHAIN_AGGREGATOR_ETHEREUM=0x...
-CROSSCHAIN_AGGREGATOR_BSC=0x...
 
 # API Keys
+U2U_TESTNET_EXPLORER_API_KEY=...
 ETHERSCAN_API_KEY=ABC123...
 BSCSCAN_API_KEY=DEF456...
 COINGECKO_API_KEY=GHI789...
 
-# Relayer Configuration
+# Relayer Configuration (for both systems)
 RELAYER_URL=https://relayer.iu2u.com
 RELAYER_API_KEY=secret_key
+RELAYER_FEE_PERCENTAGE=10
 ```
 
 ### Optional Variables
@@ -529,11 +593,37 @@ const monitoringConfig = {
 
 ## Next Steps
 
-With your configuration complete:
+With your configuration complete for both Gasless Meta Transactions and IU2U Cross-Chain Protocol:
 
-1. **[Deploy Contracts](../guides/deployment.md)** - Deploy to your target networks
-2. **[Test Integration](../guides/testing.md)** - Validate your setup
-3. **[Monitor Performance](../guides/monitoring.md)** - Set up monitoring
-4. **[Optimize Settings](../guides/optimization.md)** - Fine-tune for production
+1. **[Deploy MetaTx Contracts](../metatx/deployment.md)** - Deploy gasless transaction infrastructure
+2. **[Deploy IU2U Contracts](../guides/deployment.md)** - Deploy cross-chain bridge contracts
+3. **[Set Up Gas Credits](../metatx/gascreditvault.md)** - Configure token deposits for gas payments
+4. **[Test Gasless Transactions](../metatx/overview.md)** - Validate meta-transaction functionality
+5. **[Test Cross-Chain Bridge](../cross-chain/token-transfers.md)** - Validate IU2U transfers
+6. **[Monitor Both Systems](../guides/monitoring.md)** - Set up comprehensive monitoring
+7. **[Integrate in dApp](../examples/combined-integration.md)** - Build complete user flows
 
 For troubleshooting configuration issues, see the [Troubleshooting Guide](../resources/troubleshooting.md).
+
+## Quick Integration Checklist
+
+### Gasless Meta Transactions Setup
+- [ ] Deploy MetaTxGateway and GasCreditVault contracts
+- [ ] Configure supported tokens (USDC, USDT, IU2U)
+- [ ] Set up relayer infrastructure
+- [ ] Test gas credit deposits and consumption
+- [ ] Verify EIP-712 signature validation
+
+### IU2U Cross-Chain Setup
+- [ ] Deploy IU2U token and gateway contracts
+- [ ] Configure supported chains and DEX aggregators
+- [ ] Set up cross-chain relayers
+- [ ] Test IU2U deposits/withdrawals
+- [ ] Verify cross-chain transfers and contract calls
+
+### Combined System Integration
+- [ ] Implement gasless cross-chain operations
+- [ ] Set up monitoring for both systems
+- [ ] Configure emergency controls
+- [ ] Test end-to-end user flows
+- [ ] Deploy to production networks

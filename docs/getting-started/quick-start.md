@@ -1,47 +1,57 @@
 # Quick Start
 
-Get up and running with IU2U Protocol in just a few minutes! This guide will walk you through your first cross-chain token swap.
+Get up and running with IU2U Protocol in just a few minutes! This guide combines **Gasless Meta Transactions** and **IU2U Cross-Chain Protocol** for seamless blockchain interactions.
 
 ## Overview
 
+IU2U Protocol is a unified system that enables:
+
+- **🔥 Gasless Meta Transactions**: Execute any contract interaction without holding native gas tokens
+- **🌉 IU2U Cross-Chain Protocol**: Seamless token transfers and DEX aggregation across 7+ blockchains
+
 In this quick start, you'll learn how to:
 
-1. Connect to the IU2U Protocol
-2. Perform a basic token swap
-3. Execute a cross-chain transfer
-4. Use the DEX aggregation features
+1. Set up gas credits for gasless transactions
+2. Execute gasless contract calls
+3. Perform cross-chain IU2U transfers
+4. Use DEX aggregation features
+5. Integrate both systems in your dApp
 
 ## 1. Basic Setup
 
 ### Frontend Integration
 
-First, install and initialize the IU2U SDK:
+Install and initialize the IU2U SDK with both gasless and cross-chain capabilities:
 
 ```javascript
-import { IU2UProvider, CrossChainAggregator } from '@iu2u/sdk';
+import {
+  IU2UProvider,
+  CrossChainAggregator,
+  GasCreditVault,
+  MetaTxGateway
+} from '@iu2u/sdk';
 import { ethers } from 'ethers';
 
 // Initialize Web3 provider
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
-// Initialize IU2U
+// Initialize IU2U Protocol (both systems)
 const iu2u = new IU2UProvider({
   provider: provider,
   signer: signer,
-  network: 'mainnet' // or 'testnet'
+  network: 'testnet' // Use testnet for development
 });
 
-// Initialize DEX Aggregator
-const aggregator = new CrossChainAggregator({
-  provider: provider,
-  signer: signer
-});
+// Initialize components
+const aggregator = new CrossChainAggregator({ provider, signer });
+const gasVault = new GasCreditVault({ provider, signer });
+const metaTxGateway = new MetaTxGateway({ provider, signer });
 ```
 
 ### Smart Contract Integration
 
-For direct smart contract integration:
+For direct smart contract integration with both systems:
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -49,177 +59,274 @@ pragma solidity ^0.8.24;
 
 import "./interfaces/IIU2UGateway.sol";
 import "./IU2UExecutable.sol";
+import "./interfaces/IGasCreditVault.sol";
 
 contract MyDApp is IU2UExecutable {
-    constructor(address gateway) IU2UExecutable(gateway) {}
-    
-    function sendCrossChainMessage(
+    IGasCreditVault public gasVault;
+    IIU2UGateway public iu2uGateway;
+
+    constructor(
+        address gateway_,
+        address gasVault_,
+        address iu2uGateway_
+    ) IU2UExecutable(gateway_) {
+        gasVault = IGasCreditVault(gasVault_);
+        iu2uGateway = IIU2UGateway(iu2uGateway_);
+    }
+
+    // Gasless function call
+    function gaslessTransfer(address token, address to, uint256 amount) external {
+        // This function can be called gaslessly via MetaTxGateway
+        IERC20(token).transfer(to, amount);
+    }
+
+    // Cross-chain IU2U transfer
+    function crossChainTransfer(
         string memory destinationChain,
-        string memory destinationAddress,
-        bytes memory payload
+        address destinationAddress,
+        uint256 amount
     ) external {
-        gateway.callContract(destinationChain, destinationAddress, payload);
+        iu2uGateway.sendToken(destinationChain, _addressToString(destinationAddress), "IU2U", amount);
     }
 }
 ```
 
-## 2. Your First Token Swap
+## 2. Gas Credits Setup
 
-### Local Swap (Same Chain)
+### Deposit Tokens for Gas Credits
 
-Swap tokens on the same blockchain using DEX aggregation:
+First, set up gas credits to enable gasless transactions:
 
 ```javascript
-async function performSwap() {
+async function setupGasCredits() {
   try {
-    const tokenIn = '0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632'; // USDC
-    const tokenOut = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // WETH
-    const amountIn = ethers.utils.parseUnits('100', 6); // 100 USDC
-    
-    // Get the best quote from all DEXes
-    const quote = await aggregator.getOptimalQuote(
-      tokenIn,
-      tokenOut,
-      amountIn
+    // Check supported tokens
+    const supportedTokens = await gasVault.getWhitelistedTokens();
+    console.log('Supported tokens:', supportedTokens);
+
+    // Deposit USDC to get gas credits
+    const usdcAddress = '0x036CbD53842c5426634e7929541eC2318f3dCF7e'; // USDC on testnet
+    const depositAmount = ethers.utils.parseUnits('10', 6); // 10 USDC
+
+    // Approve vault to spend tokens
+    const usdc = new ethers.Contract(usdcAddress, ERC20_ABI, signer);
+    await usdc.approve(gasVault.address, depositAmount);
+
+    // Deposit and get credits
+    const tx = await gasVault.deposit(usdcAddress, depositAmount);
+    await tx.wait();
+
+    // Check credit balance
+    const credits = await gasVault.credits(await signer.getAddress());
+    console.log(`Gas credits: $${ethers.utils.formatEther(credits)}`);
+
+  } catch (error) {
+    console.error('Gas credit setup failed:', error);
+  }
+}
+```
+
+### Check Gas Credit Balance
+
+```javascript
+async function checkCredits() {
+  const userAddress = await signer.getAddress();
+  const creditBalance = await gasVault.credits(userAddress);
+  const creditValue = ethers.utils.formatEther(creditBalance);
+
+  console.log(`Available gas credits: $${creditValue}`);
+
+  // Estimate if you have enough for a transaction
+  const estimatedCost = ethers.utils.parseEther('0.50'); // $0.50
+  const hasEnoughCredits = creditBalance.gte(estimatedCost);
+
+  return { creditBalance, hasEnoughCredits };
+}
+```
+
+## 3. Gasless Transactions
+
+### Execute Gasless Contract Calls
+
+Execute any contract function without holding native gas tokens:
+
+```javascript
+async function gaslessTransfer() {
+  try {
+    // Check gas credits first
+    const { hasEnoughCredits } = await checkCredits();
+    if (!hasEnoughCredits) {
+      throw new Error('Insufficient gas credits. Please deposit more tokens.');
+    }
+
+    // Target contract and function
+    const targetContract = '0x1234567890123456789012345678901234567890'; // Your contract
+    const recipient = '0x742d35Cc6634C0532925a3b8D4048b05fb2fE98c';
+    const amount = ethers.utils.parseEther('1');
+
+    // Encode function call
+    const iface = new ethers.utils.Interface(['function transfer(address,uint256)']);
+    const data = iface.encodeFunctionData('transfer', [recipient, amount]);
+
+    // Create meta-transaction
+    const metaTx = {
+      to: targetContract,
+      value: 0, // No native token transfer
+      data: data
+    };
+
+    // Get current nonce
+    const userAddress = await signer.getAddress();
+    const nonce = await metaTxGateway.getNonce(userAddress);
+
+    // Set deadline (5 minutes from now)
+    const deadline = Math.floor(Date.now() / 1000) + 300;
+
+    // Get digest for signing
+    const digest = await metaTxGateway.getSigningDigest(
+      userAddress,
+      [metaTx], // Single transaction
+      nonce,
+      deadline
     );
-    
-    console.log(`Best rate: ${quote.bestAmount} WETH for 100 USDC`);
-    console.log(`Best DEX: ${quote.dexName}`);
-    
-    // Execute the swap
-    const tx = await aggregator.executeSwap({
-      tokenIn,
-      tokenOut,
-      amountIn,
-      minAmountOut: quote.bestAmount.mul(995).div(1000), // 0.5% slippage
-      routerType: quote.bestRouter
-    });
-    
-    console.log('Swap successful:', tx.hash);
-  } catch (error) {
-    console.error('Swap failed:', error);
-  }
-}
-```
 
-### Cross-Chain Swap
+    // Sign the transaction
+    const signature = await signer.signMessage(ethers.utils.arrayify(digest));
 
-Swap tokens across different blockchains:
+    // Execute via relayer
+    const tx = await metaTxGateway.executeMetaTransactions(
+      userAddress,
+      [metaTx],
+      signature,
+      nonce,
+      deadline
+    );
 
-```javascript
-async function crossChainSwap() {
-  try {
-    // Swap USDC on Ethereum for BNB on BSC
-    const tx = await iu2u.crossChainSwap({
-      sourceChain: 'ethereum',
-      destinationChain: 'bsc',
-      tokenIn: '0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632', // USDC on Ethereum
-      tokenOut: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB on BSC
-      amountIn: ethers.utils.parseUnits('100', 6),
-      minAmountOut: ethers.utils.parseEther('0.3'), // Minimum BNB expected
-      slippage: 50 // 0.5%
-    });
-    
-    console.log('Cross-chain swap initiated:', tx.hash);
-    
-    // Monitor the swap progress
-    const result = await iu2u.waitForCrossChainCompletion(tx.hash);
-    console.log('Cross-chain swap completed:', result);
-  } catch (error) {
-    console.error('Cross-chain swap failed:', error);
-  }
-}
-```
-
-## 3. Cross-Chain Token Transfer
-
-Send tokens to another blockchain:
-
-```javascript
-async function sendTokensCrossChain() {
-  try {
-    const tx = await iu2u.sendToken({
-      destinationChain: 'polygon',
-      destinationAddress: '0x742d35Cc6634C0532925a3b8D4048b05fb2fE98c',
-      tokenSymbol: 'IU2U',
-      amount: ethers.utils.parseEther('10') // 10 IU2U
-    });
-    
-    console.log('Cross-chain transfer initiated:', tx.hash);
-  } catch (error) {
-    console.error('Transfer failed:', error);
-  }
-}
-```
-
-## 4. Gasless Transactions
-
-Execute transactions without holding native gas tokens:
-
-```javascript
-async function gaslessTransaction() {
-  try {
-    // Check gas credits balance
-    const credits = await iu2u.getGasCredits();
-    console.log(`Gas credits: $${credits.balance}`);
-    
-    if (credits.balance < 0.50) {
-      throw new Error('Insufficient gas credits');
-    }
-    
-    // Execute gasless transaction
-    const tx = await iu2u.executeGaslessTransaction({
-      to: '0x...',
-      data: '0x...', // Encoded function call
-      value: '0'
-    });
-    
     console.log('Gasless transaction executed:', tx.hash);
+
   } catch (error) {
     console.error('Gasless transaction failed:', error);
   }
 }
 ```
 
-## 5. DEX Aggregation Features
+### Batch Gasless Transactions
 
-### Compare All DEX Quotes
+Execute multiple operations in a single gasless transaction:
 
 ```javascript
-async function compareQuotes() {
-  const quotes = await aggregator.getAllQuotes(
-    '0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632', // USDC
-    '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
-    ethers.utils.parseUnits('1000', 6) // 1000 USDC
-  );
-  
-  // Display top 5 quotes
-  quotes.slice(0, 5).forEach((quote, index) => {
-    console.log(`${index + 1}. ${quote.dexName}: ${quote.amountOut} WETH`);
-  });
+async function batchGaslessOperations() {
+  try {
+    const userAddress = await signer.getAddress();
+    const nonce = await metaTxGateway.getNonce(userAddress);
+    const deadline = Math.floor(Date.now() / 1000) + 300;
+
+    // Multiple operations in one batch
+    const metaTxs = [
+      {
+        to: tokenContract,
+        value: 0,
+        data: encodeTransfer(recipient1, ethers.utils.parseEther('1'))
+      },
+      {
+        to: stakingContract,
+        value: 0,
+        data: encodeStake(ethers.utils.parseEther('0.5'))
+      },
+      {
+        to: votingContract,
+        value: 0,
+        data: encodeVote(proposalId, true)
+      }
+    ];
+
+    // Sign and execute batch
+    const digest = await metaTxGateway.getSigningDigest(userAddress, metaTxs, nonce, deadline);
+    const signature = await signer.signMessage(ethers.utils.arrayify(digest));
+
+    const tx = await metaTxGateway.executeMetaTransactions(
+      userAddress, metaTxs, signature, nonce, deadline
+    );
+
+    console.log('Batch gasless transactions executed:', tx.hash);
+
+  } catch (error) {
+    console.error('Batch transaction failed:', error);
+  }
 }
 ```
 
-### Multi-Protocol Routing
+## 4. IU2U Bridge Operations
+
+### Cross-Chain IU2U Transfers
+
+Send IU2U tokens across different blockchains:
 
 ```javascript
-async function multiProtocolSwap() {
-  // Swap using specific DEX protocols
-  const routerTypes = [
-    0,  // Uniswap V2
-    10, // Uniswap V3
-    1,  // SushiSwap V2
-    30  // Curve
-  ];
-  
-  const quote = await aggregator.getOptimalQuote(
-    tokenIn,
-    tokenOut,
-    amountIn,
-    routerTypes
-  );
-  
-  console.log(`Best quote from selected DEXes: ${quote.bestAmount}`);
+async function sendIU2UCrossChain() {
+  try {
+    // Get IU2U token address on current chain
+    const iu2uToken = await iu2u.getIU2UTokenAddress();
+
+    // Approve gateway to spend IU2U
+    const iu2u = new ethers.Contract(iu2uToken, ERC20_ABI, signer);
+    const amount = ethers.utils.parseEther('10');
+    await iu2u.approve(iu2uGateway.address, amount);
+
+    // Send IU2U to BSC
+    const tx = await iu2uGateway.sendToken(
+      'bsc', // destination chain
+      '0x742d35Cc6634C0532925a3b8D4048b05fb2fE98c', // recipient address
+      'IU2U',
+      amount
+    );
+
+    console.log('IU2U cross-chain transfer initiated:', tx.hash);
+
+    // Monitor transfer status
+    const status = await iu2u.waitForTransferCompletion(tx.hash);
+    console.log('Transfer completed:', status);
+
+  } catch (error) {
+    console.error('IU2U transfer failed:', error);
+  }
+}
+```
+
+### Cross-Chain Contract Calls
+
+Execute contracts on other chains with IU2U transfers:
+
+```javascript
+async function crossChainContractCall() {
+  try {
+    // Target contract on destination chain
+    const targetContract = '0x1234567890123456789012345678901234567890';
+    const recipient = '0x742d35Cc6634C0532925a3b8D4048b05fb2fE98c';
+    const amount = ethers.utils.parseEther('5');
+
+    // Encode function call for destination
+    const iface = new ethers.utils.Interface(['function deposit(address,uint256)']);
+    const payload = iface.encodeFunctionData('deposit', [recipient, amount]);
+
+    // Approve IU2U spending
+    const iu2u = new ethers.Contract(await iu2u.getIU2UTokenAddress(), ERC20_ABI, signer);
+    await iu2u.approve(iu2uGateway.address, amount);
+
+    // Call contract with IU2U transfer
+    const tx = await iu2uGateway.callContractWithToken(
+      'polygon', // destination chain
+      targetContract,
+      payload,
+      'IU2U',
+      amount
+    );
+
+    console.log('Cross-chain contract call initiated:', tx.hash);
+
+  } catch (error) {
+    console.error('Cross-chain call failed:', error);
+  }
 }
 ```
 
@@ -255,14 +362,51 @@ async function robustSwap() {
 }
 ```
 
+## 5. Integration Examples
+
+### Combined Gasless + Cross-Chain dApp
+
+Build a complete dApp that combines both systems:
+
+```javascript
+async function completeUserFlow() {
+  try {
+    // Step 1: Set up gas credits
+    await setupGasCredits();
+
+    // Step 2: Execute gasless staking
+    await gaslessStake(ethers.utils.parseEther('1'));
+
+    // Step 3: Cross-chain IU2U transfer to claim rewards elsewhere
+    await sendIU2UCrossChain();
+
+    console.log('Complete user flow executed successfully!');
+
+  } catch (error) {
+    console.error('User flow failed:', error);
+  }
+}
+
+// Gasless staking function
+async function gaslessStake(amount) {
+  const stakingContract = '0x...'; // Your staking contract
+  const iface = new ethers.utils.Interface(['function stake(uint256)']);
+  const data = iface.encodeFunctionData('stake', [amount]);
+
+  const metaTx = { to: stakingContract, value: 0, data };
+  // ... execute via MetaTxGateway
+}
+```
+
 ## Next Steps
 
 Now that you've completed the quick start:
 
-1. **[Explore Core Concepts](../core-concepts/protocol-overview.md)** - Understand how IU2U works
-2. **[Learn DEX Aggregation](../dex-aggregation/overview.md)** - Master multi-protocol trading
-3. **[Study Examples](../examples/basic-swap.md)** - See real-world integration patterns
+1. **[Explore Core Concepts](../core-concepts/protocol-overview.md)** - Understand the integrated IU2U system
+2. **[Learn Gasless Meta Transactions](../metatx/overview.md)** - Deep dive into gasless transactions
+3. **[Study Cross-Chain Operations](../cross-chain/message-passing.md)** - Master IU2U bridge functionality
 4. **[Read API Reference](../api-reference/iu2u-gateway.md)** - Complete function documentation
+5. **[Check Configuration](../getting-started/configuration.md)** - Set up both systems properly
 
 ## Common Patterns
 

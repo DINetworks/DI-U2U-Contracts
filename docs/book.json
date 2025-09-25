@@ -24,7 +24,7 @@
   ],
   "pluginsConfig": {
     "github": {
-      "url": "https://github.com/U2U-Network/U2U-Contracts"
+      "url": "https://github.com/DINetworks/DI-U2U-Contracts"
     },
     "theme-default": {
       "showLevel": true,

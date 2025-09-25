@@ -16,8 +16,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/DINetworks/IU2U-Contracts.git
-cd IU2U-Contracts
+git clone https://github.com/DINetworks/DI-U2U-Contracts.git
+cd DI-U2U-Contracts
 ```
 
 ### 2. Install Dependencies

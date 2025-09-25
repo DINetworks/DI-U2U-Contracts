@@ -15,6 +15,18 @@
 * [Relayer Network](core-concepts/relayer-network.md)
 * [Security Model](core-concepts/security-model.md)
 
+## Gasless Meta Transactions
+
+* [MetaTx Overview](metatx/overview.md)
+* [MetaTxGateway](metatx/metatxgateway.md)
+* [GasCreditVault](metatx/gascreditvault.md)
+
+## Cross-Chain Operations
+
+* [Message Passing](cross-chain/message-passing.md)
+* [Token Transfers](cross-chain/token-transfers.md)
+* [Contract Calls](cross-chain/contract-calls.md)
+
 ## DEX Aggregation
 
 * [Overview](dex-aggregation/overview.md)
@@ -23,16 +35,13 @@
 * [Quote System](dex-aggregation/quote-system.md)
 * [Router Types](dex-aggregation/router-types.md)
 
-## Cross-Chain Operations
-
-* [Message Passing](cross-chain/message-passing.md)
-* [Token Transfers](cross-chain/token-transfers.md)
-* [Contract Calls](cross-chain/contract-calls.md)
 
 ## API Reference
 
 * [IU2U Gateway](api-reference/iu2u-gateway.md)
 * [CrossChainAggregator](api-reference/cross-chain-aggregator.md)
+* [MetaTxGateway](api-reference/metatx-gateway.md)
+* [GasCreditVault](api-reference/gas-credit-vault.md)
 * [MulticallLibraryV2](api-reference/multicall-library.md)
 * [QuoteLibrary](api-reference/quote-library.md)
 * [Events & Errors](api-reference/events-errors.md)
@@ -47,9 +56,12 @@
 
 ## Examples
 
+* [Gasless Transactions](examples/gasless-transactions.md)
+* [Gas Credit Management](examples/gas-credit-management.md)
 * [Basic Token Swap](examples/basic-swap.md)
 * [Cross-Chain Swap](examples/cross-chain-swap.md)
 * [DEX Aggregation](examples/dex-aggregation.md)
+* [Combined Integration](examples/combined-integration.md)
 * [Advanced Patterns](examples/advanced-patterns.md)
 
 ## Resources
