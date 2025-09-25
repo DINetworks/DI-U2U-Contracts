@@ -374,6 +374,7 @@ sequenceDiagram
     V-->>M: Payment confirmed
     M-->>R: Transaction executed
     R-->>U: Transaction receipt
+    
 ```
 
 ## Security Considerations

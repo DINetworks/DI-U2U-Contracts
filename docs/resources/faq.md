@@ -103,6 +103,7 @@ sequenceDiagram
     Relayer->>Aggregator_B: Deliver IU2U
     Aggregator_B->>Aggregator_B: IU2U → BNB (PancakeSwap)
     Aggregator_B->>User: Deliver BNB
+    
 {% endmermaid %}
 
 ### How are gas fees handled?

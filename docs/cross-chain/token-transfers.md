@@ -29,6 +29,7 @@ sequenceDiagram
     Relayer->>Dest_Gateway: Submit mint command
     Dest_Gateway->>Token_B: Mint tokens
     Token_B->>User: Transfer to recipient
+    
 ```
 
 ### Lock-and-Release Model (For Native Tokens)
@@ -42,7 +43,7 @@ flowchart LR
     C --> D[Cross-Chain Transfer]
     D --> E[Wrapped Token Burned]
     E --> F[Original Token Released]
-    
+
 ```
 
 ## Implementation

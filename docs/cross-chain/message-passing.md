@@ -60,6 +60,7 @@ sequenceDiagram
     Gateway_B->>Receiver: Execute payload
     Receiver->>Gateway_B: Return response
     Gateway_B->>Gateway_B: Emit Executed event
+    
 ```
 
 ## Implementation

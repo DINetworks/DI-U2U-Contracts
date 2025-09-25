@@ -26,6 +26,7 @@ sequenceDiagram
     MetaTxGateway->>Relayer: Transaction result
     Relayer->>DApp: Execution status
     DApp->>User: Transaction complete
+    
 ```
 
 ## Core Components

@@ -85,6 +85,7 @@ sequenceDiagram
     Gateway_A->>Gateway_A: Validate parameters
     Gateway_A->>Event_A: Emit ContractCall event
     Event_A->>Event_A: Include in block
+
 ```
 
 ### 2. Relayer Processing
@@ -100,6 +101,7 @@ sequenceDiagram
     Relayer->>Validator: Submit for validation
     Validator->>Validator: Multi-sig consensus
     Validator->>Relayer: Approve command
+
 ```
 
 ### 3. Message Execution
@@ -115,6 +117,7 @@ sequenceDiagram
     Gateway_B->>Contract_B: Execute payload
     Contract_B->>Gateway_B: Return result
     Gateway_B->>Relayer: Confirm execution
+    
 ```
 
 ## Security Architecture
@@ -176,7 +179,7 @@ flowchart LR
     C --> D[Testnet Testing]
     D --> E[Mainnet Deployment]
     E --> F[Relayer Activation]
-    
+
 ```
 
 ### 3. Configuration Parameters

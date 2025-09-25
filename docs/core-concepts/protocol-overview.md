@@ -123,6 +123,7 @@ sequenceDiagram
     Gateway_B->>User: Send Token B
     Gateway_B->>Relayer: Confirm completion
     Relayer->>Gateway_A: Update status
+    
 ```
 
 ### Meta-Transaction Flow
