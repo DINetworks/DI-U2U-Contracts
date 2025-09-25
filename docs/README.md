@@ -1,4 +1,4 @@
-![IU2U Protocol](IU2U-banner.png)
+![IU2U Protocol](IU2U-Banner.png)
 
 # IU2U Protocol Documentation
 
