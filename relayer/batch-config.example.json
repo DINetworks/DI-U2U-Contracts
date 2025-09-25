@@ -2,14 +2,14 @@
   "relayerPrivateKey": "YOUR_RELAYER_PRIVATE_KEY",
   "healthPort": 3001,
   "chains": {
-    "crossfi": {
-      "name": "CrossFi Mainnet",
-      "chainId": 4158,
-      "rpc": "https://rpc.crossfi.org",
+    "u2u-nebulas-testnet": {
+      "name": "U2U Nebulas Testnet",
+      "chainId": 2484,
+      "rpc": "https://rpc-nebulas-testnet.uniultra.xyz/",
       "gasCreditVault": "0x...", 
       "metaTxGateway": "0x...",
-      "nativeTokenSymbol": "XFI",
-      "blockExplorer": "https://xfiscan.com"
+      "nativeTokenSymbol": "U2U",
+      "blockExplorer": "https://testnet.u2uscan.xyz"
     },
     "ethereum": {
       "name": "Ethereum Mainnet",
@@ -79,9 +79,9 @@
       "source": "coingecko"
     },
     "crossfi": {
-      "symbol": "XFI",
+      "symbol": "U2U",
       "source": "dia_oracle",
-      "key": "XFI/USD"
+      "key": "U2U/USD"
     }
   },
   "monitoring": {

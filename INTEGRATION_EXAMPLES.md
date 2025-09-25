@@ -392,15 +392,15 @@ function IU2UWallet() {
     }
   }
   
-  async function depositXFI() {
+  async function depositU2U() {
     setLoading(true);
     try {
-      const amount = ethers.utils.parseEther('1'); // 1 XFI
+      const amount = ethers.utils.parseEther('1'); // 1 U2U
       const tx = await iu2u.deposit({ value: amount });
       await tx.wait();
       
       await initializeWallet(); // Refresh balances
-      alert('XFI deposited successfully!');
+      alert('U2U deposited successfully!');
     } catch (error) {
       alert('Deposit failed: ' + error.message);
     }
@@ -433,8 +433,8 @@ function IU2UWallet() {
       </div>
       
       <div className="actions">
-        <button onClick={depositXFI} disabled={loading}>
-          Deposit XFI → IU2U
+        <button onClick={depositU2U} disabled={loading}>
+          Deposit U2U → IU2U
         </button>
         <button onClick={depositCredits} disabled={loading}>
           Add Gas Credits
@@ -970,7 +970,7 @@ const iu2u = new IU2UProvider({
 });
 
 await iu2u.connect(privateKey);
-await iu2u.deposit('10'); // Deposit 10 XFI
+await iu2u.deposit('10'); // Deposit 10 U2U
 await iu2u.sendCrossChain('ethereum', '0x...', '5'); // Send 5 IU2U to Ethereum
 ```
 

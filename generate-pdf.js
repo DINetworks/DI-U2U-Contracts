@@ -196,7 +196,7 @@ async function generatePDF() {
                 Version 1.0<br>
                 ${new Date().toLocaleDateString()}<br>
                 <br>
-                Interoperable XFI Protocol<br>
+                Interoperable U2U Protocol<br>
                 Cross-Chain Infrastructure & Gasless Transactions
             </div>
         </div>

@@ -314,7 +314,7 @@ function generateHTML() {
         <strong>Version 1.0</strong><br>
         ${currentDate}<br>
         <br>
-        Interoperable XFI Protocol<br>
+        Interoperable U2U Protocol<br>
         Cross-Chain Infrastructure & Gasless Transactions<br>
         <br>
         <em>Comprehensive Documentation Package</em>

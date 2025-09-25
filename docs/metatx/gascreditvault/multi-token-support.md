@@ -32,6 +32,7 @@ flowchart TB
         J[Fallback Oracles] --> F
         K[Price Staleness Check] --> F
     end
+    
 ```
 
 ## Token Configuration

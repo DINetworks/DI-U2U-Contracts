@@ -37,6 +37,7 @@ flowchart TB
         K[Withdraw Tokens] --> A
         L[Check Balance] --> E
     end
+    
 ```
 
 ## Contract Interface

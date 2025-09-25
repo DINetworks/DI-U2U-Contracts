@@ -34,6 +34,7 @@ flowchart TB
         L[Balance Tracking] --> K
         M[Performance Metrics] --> K
     end
+    
 ```
 
 ## Core Data Structures

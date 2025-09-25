@@ -75,6 +75,7 @@ flowchart TB
     SF --> OP
     SS --> ETH
     SP --> BASE
+
 ```
 
 ## Supported DEX Categories
@@ -189,6 +190,7 @@ flowchart LR
     subgraph "Route 3"
         A3[Direct Path] --> B3[Uniswap V3]
     end
+    
 ```
 
 ### Route Optimization

@@ -17,6 +17,7 @@ flowchart TB
     B -->|Transfer Tokens| D
     E[Price Oracle] -->|Get Exchange Rate| B
     F[MetaTxGateway] -->|Execute Transaction| D
+    
 ```
 
 ## Key Features

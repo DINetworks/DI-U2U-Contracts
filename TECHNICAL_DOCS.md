@@ -13,7 +13,7 @@
 
 ## Overview
 
-IU2U (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains. The system consists of two main components:
+IU2U (Interoperable U2U) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains. The system consists of two main components:
 
 1. **GMP (General Message Passing) Protocol** - For cross-chain communication and token transfers
 2. **Meta-Transaction System** - For gasless transaction execution with IU2U-based gas credits
@@ -21,7 +21,7 @@ IU2U (Interoperable XFI) is a comprehensive cross-chain infrastructure that enab
 
 ### Key Features
 
-- **1:1 XFI Backing**: IU2U tokens are fully backed by native XFI on CrossFi chain
+- **1:1 U2U Backing**: IU2U tokens are fully backed by native U2U on CrossFi chain
 - **Cross-Chain Communication**: Message passing protocol similar to Axelar
 - **Gasless Transactions**: Users can execute transactions without holding native gas tokens
 - **Multi-Chain Support**: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base
@@ -39,7 +39,7 @@ IU2U (Interoperable XFI) is a comprehensive cross-chain infrastructure that enab
 ├─────────────────┤    ├─────────────────┤    ├─────────────────┤
 │ IU2U Gateway    │    │ IU2U Gateway    │    │ IU2U Gateway    │
 │ GasCreditVault  │    │ MetaTxGateway   │    │ MetaTxGateway   │
-│ XFI ↔ IU2U      │    │ Contract Calls  │    │ Contract Calls  │
+│ U2U ↔ IU2U      │    │ Contract Calls  │    │ Contract Calls  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
@@ -56,7 +56,7 @@ IU2U (Interoperable XFI) is a comprehensive cross-chain infrastructure that enab
 
 ### System Components
 
-1. **IU2U Gateway** (`IU2U.sol`) - Core contract handling GMP and XFI↔IU2U conversion
+1. **IU2U Gateway** (`IU2U.sol`) - Core contract handling GMP and U2U↔IU2U conversion
 2. **MetaTxGasCreditVault** (`MetaTxGasCreditVault.sol`) - Gas credit management on CrossFi
 3. **MetaTxGateway** (`MetaTxGateway.sol`) - Meta-transaction execution on any chain
 4. **IU2UExecutable** (`IU2UExecutable.sol`) - Base contract for dApps receiving cross-chain calls
@@ -234,7 +234,7 @@ aggregator.crossChainSwap(
 ### IU2U.sol - Main Gateway Contract
 
 The core contract that handles:
-- XFI ↔ IU2U conversion (1:1 ratio)
+- U2U ↔ IU2U conversion (1:1 ratio)
 - Cross-chain message passing
 - Token transfers between chains
 - Relayer management
@@ -242,7 +242,7 @@ The core contract that handles:
 #### Key Functions
 
 ```solidity
-// XFI ↔ IU2U Conversion
+// U2U ↔ IU2U Conversion
 function deposit() public payable onlyCrossfiChain
 function withdraw(uint256 amount_) public onlyCrossfiChain
 
@@ -625,8 +625,8 @@ const provider = new IU2UProvider({
   relayerUrl: 'http://localhost:3001'
 });
 
-// Deposit XFI for IU2U
-await provider.deposit('100'); // 100 XFI
+// Deposit U2U for IU2U
+await provider.deposit('100'); // 100 U2U
 
 // Send cross-chain transaction
 await provider.callContract(

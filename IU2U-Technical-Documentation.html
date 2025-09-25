@@ -287,7 +287,7 @@
         <strong>Version 1.0</strong><br>
         July 29, 2025<br>
         <br>
-        Interoperable XFI Protocol<br>
+        Interoperable U2U Protocol<br>
         Cross-Chain Infrastructure & Gasless Transactions<br>
         <br>
         <em>Comprehensive Documentation Package</em>
@@ -317,7 +317,7 @@
 
 <h2>Overview</h2>
 
-<p>IU2U (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains. The system consists of two main components:</p>
+<p>IU2U (Interoperable U2U) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains. The system consists of two main components:</p>
 
 <p>1. <strong>GMP (General Message Passing) Protocol</strong> - For cross-chain communication and token transfers
 <br>2. <strong>Meta-Transaction System</strong> - For gasless transaction execution with IU2U-based gas credits
@@ -325,7 +325,7 @@
 
 <h3>Key Features</h3>
 
-<p>- <strong>1:1 XFI Backing</strong>: IU2U tokens are fully backed by native XFI on CrossFi chain
+<p>- <strong>1:1 U2U Backing</strong>: IU2U tokens are fully backed by native U2U on CrossFi chain
 <br>- <strong>Cross-Chain Communication</strong>: Message passing protocol similar to Axelar
 <br>- <strong>Gasless Transactions</strong>: Users can execute transactions without holding native gas tokens
 <br>- <strong>Multi-Chain Support</strong>: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base
@@ -343,7 +343,7 @@
 ├─────────────────┤    ├─────────────────┤    ├─────────────────┤
 │ IU2U Gateway    │    │ IU2U Gateway    │    │ IU2U Gateway    │
 │ GasCreditVault  │    │ MetaTxGateway   │    │ MetaTxGateway   │
-│ XFI ↔ IU2U      │    │ Contract Calls  │    │ Contract Calls  │
+│ U2U ↔ IU2U      │    │ Contract Calls  │    │ Contract Calls  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
@@ -360,7 +360,7 @@
 
 <h3>System Components</h3>
 
-<p>1. <strong>IU2U Gateway</strong> (<code>IU2U.sol</code>) - Core contract handling GMP and XFI↔IU2U conversion
+<p>1. <strong>IU2U Gateway</strong> (<code>IU2U.sol</code>) - Core contract handling GMP and U2U↔IU2U conversion
 <br>2. <strong>MetaTxGasCreditVault</strong> (<code>MetaTxGasCreditVault.sol</code>) - Gas credit management on CrossFi
 <br>3. <strong>MetaTxGateway</strong> (<code>MetaTxGateway.sol</code>) - Meta-transaction execution on any chain
 <br>4. <strong>IU2UExecutable</strong> (<code>IU2UExecutable.sol</code>) - Base contract for dApps receiving cross-chain calls
@@ -537,7 +537,7 @@ aggregator.crossChainSwap(
 <h3>IU2U.sol - Main Gateway Contract</h3>
 
 <p>The core contract that handles:
-<br>- XFI ↔ IU2U conversion (1:1 ratio)
+<br>- U2U ↔ IU2U conversion (1:1 ratio)
 <br>- Cross-chain message passing
 <br>- Token transfers between chains
 <br>- Relayer management</p>
@@ -545,7 +545,7 @@ aggregator.crossChainSwap(
 <h4>Key Functions</h4>
 
 <div class="code-section"><pre><code>
-// XFI ↔ IU2U Conversion
+// U2U ↔ IU2U Conversion
 function deposit() public payable onlyCrossfiChain
 function withdraw(uint256 amount_) public onlyCrossfiChain
 
@@ -928,8 +928,8 @@ const { IU2UProvider } = require(&#039;@iu2u/sdk&#039;);
 <br>  relayerUrl: &#039;http://localhost:3001&#039;
 <br>});</p>
 
-<p>// Deposit XFI for IU2U
-<br>await provider.deposit(&#039;100&#039;); // 100 XFI</p>
+<p>// Deposit U2U for IU2U
+<br>await provider.deposit(&#039;100&#039;); // 100 U2U</p>
 
 <p>// Send cross-chain transaction
 <br>await provider.callContract(
@@ -1140,12 +1140,12 @@ describe(&quot;Meta-Transaction Flow&quot;, function () {
 
 <h3>Core Functions</h3>
 
-<h4>XFI ↔ IU2U Conversion</h4>
+<h4>U2U ↔ IU2U Conversion</h4>
 
 <div class="code-section"><pre><code>
 function deposit() public payable onlyCrossfiChain
 </code></pre></div>
-<strong>Description</strong>: Deposit native XFI to mint equivalent IU2U tokens (1:1 ratio)
+<strong>Description</strong>: Deposit native U2U to mint equivalent IU2U tokens (1:1 ratio)
 - <strong>Requirements</strong>: Must be called on CrossFi chain
 - <strong>Parameters</strong>: None (amount specified in msg.value)
 - <strong>Events</strong>: <code>Deposited(address indexed user, uint256 amount)</code>
@@ -1153,10 +1153,10 @@ function deposit() public payable onlyCrossfiChain
 <div class="code-section"><pre><code>
 function withdraw(uint256 amount_) public onlyCrossfiChain
 </code></pre></div>
-<strong>Description</strong>: Burn IU2U tokens to withdraw equivalent native XFI
+<strong>Description</strong>: Burn IU2U tokens to withdraw equivalent native U2U
 - <strong>Requirements</strong>: Must be called on CrossFi chain, sufficient IU2U balance
 - <strong>Parameters</strong>: 
-  - <code>amount_</code>: Amount of IU2U to burn (and XFI to receive)
+  - <code>amount_</code>: Amount of IU2U to burn (and U2U to receive)
 - <strong>Events</strong>: <code>Withdrawn(address indexed user, uint256 amount)</code>
 
 <h4>Cross-Chain Operations</h4>
@@ -1238,7 +1238,7 @@ function removeChain(string memory chainName) external onlyOwner
 
 <div class="code-section"><pre><code>
 function isFullyBacked() external view returns (bool)
-function getXFIBalance() external view returns (uint256)
+function getU2UBalance() external view returns (uint256)
 function isCommandExecuted(bytes32 commandId) external view returns (bool)
 function getAllRelayers() external view returns (address[] memory)
 function getRelayerCount() external view returns (uint256)
@@ -1814,9 +1814,9 @@ error InvalidPriceData();            // Oracle returned invalid price
 
 <div class="code-section"><pre><code>
 &quot;Zero Value&quot;                          // Deposit amount is zero
-&quot;Not enough XFI&quot;                      // Contract has insufficient XFI
+&quot;Not enough U2U&quot;                      // Contract has insufficient U2U
 &quot;Not enough IU2U&quot;                     // User has insufficient IU2U
-&quot;Withdraw failed&quot;                     // XFI transfer failed
+&quot;Withdraw failed&quot;                     // U2U transfer failed
 &quot;Invalid payload hash&quot;                // Payload doesn&#039;t match hash
 &quot;Contract call failed&quot;                // Target contract execution failed
 &quot;Unsupported destination chain&quot;       // Chain not in registry
@@ -1833,8 +1833,8 @@ error InvalidPriceData();            // Oracle returned invalid price
 
 <table><tr><td>Function</td><td>Gas Cost</td><td>Notes</td></tr>
 <tr><th>----------</th><th>----------</th><th>-------</th></tr>
-<tr><td><code>deposit()</code></td><td>~50,000</td><td>XFI to IU2U conversion</td></tr>
-<tr><td><code>withdraw()</code></td><td>~55,000</td><td>IU2U to XFI conversion</td></tr>
+<tr><td><code>deposit()</code></td><td>~50,000</td><td>U2U to IU2U conversion</td></tr>
+<tr><td><code>withdraw()</code></td><td>~55,000</td><td>IU2U to U2U conversion</td></tr>
 <tr><td><code>callContract()</code></td><td>~80,000</td><td>Cross-chain call initiation</td></tr>
 <tr><td><code>callContractWithToken()</code></td><td>~100,000</td><td>Cross-chain call with token burn</td></tr>
 <tr><td><code>execute()</code></td><td>~150,000 + target cost</td><td>Command execution by relayer</td></tr>
@@ -1875,7 +1875,7 @@ error InvalidPriceData();            // Oracle returned invalid price
 
 <table><tr><td>Chain</td><td>Estimated Gas Cost</td><td>Purpose</td></tr>
 <tr><th>-------</th><th>-------------------</th><th>---------</th></tr>
-<tr><td>CrossFi</td><td>0.1 XFI</td><td>Core contracts deployment</td></tr>
+<tr><td>CrossFi</td><td>0.1 U2U</td><td>Core contracts deployment</td></tr>
 <tr><td>Ethereum</td><td>0.05 ETH</td><td>Gateway and vault deployment</td></tr>
 <tr><td>BSC</td><td>0.01 BNB</td><td>Gateway deployment</td></tr>
 <tr><td>Polygon</td><td>50 MATIC</td><td>Gateway deployment</td></tr>
@@ -2275,7 +2275,7 @@ npx hardhat run scripts/update-chains.js --network crossfi
 <h3>3. Initial Token Supply</h3>
 
 <div class="code-section"><pre><code>
-<h1>Deposit initial XFI to create IU2U supply</h1>
+<h1>Deposit initial U2U to create IU2U supply</h1>
 npx hardhat run scripts/initial-deposit.js --network crossfi
 </code></pre></div>
 
@@ -2335,7 +2335,7 @@ curl http://localhost:3001/health
 // Test script
 const iu2u = await ethers.getContractAt(&quot;IU2U&quot;, iu2uAddress);
 
-<p>// Deposit XFI for IU2U
+<p>// Deposit U2U for IU2U
 <br>await iu2u.deposit({ value: ethers.parseEther(&quot;1.0&quot;) });</p>
 
 <p>// Send cross-chain
@@ -2872,15 +2872,15 @@ import { ethers } from &#039;ethers&#039;;
 <br>    }
 <br>  }</p>
 
-<p>async function depositXFI() {
+<p>async function depositU2U() {
 <br>    setLoading(true);
 <br>    try {
-<br>      const amount = ethers.utils.parseEther(&#039;1&#039;); // 1 XFI
+<br>      const amount = ethers.utils.parseEther(&#039;1&#039;); // 1 U2U
 <br>      const tx = await iu2u.deposit({ value: amount });
 <br>      await tx.wait();</p>
 
 <p>await initializeWallet(); // Refresh balances
-<br>      alert(&#039;XFI deposited successfully!&#039;);
+<br>      alert(&#039;U2U deposited successfully!&#039;);
 <br>    } catch (error) {
 <br>      alert(&#039;Deposit failed: &#039; + error.message);
 <br>    }
@@ -2913,8 +2913,8 @@ import { ethers } from &#039;ethers&#039;;
 <br>      &lt;/div&gt;</p>
 
 <p>&lt;div className=&quot;actions&quot;&gt;
-<br>        &lt;button onClick={depositXFI} disabled={loading}&gt;
-<br>          Deposit XFI → IU2U
+<br>        &lt;button onClick={depositU2U} disabled={loading}&gt;
+<br>          Deposit U2U → IU2U
 <br>        &lt;/button&gt;
 <br>        &lt;button onClick={depositCredits} disabled={loading}&gt;
 <br>          Add Gas Credits
@@ -3450,7 +3450,7 @@ class IU2UProvider {
 <br>});</p>
 
 <p>await iu2u.connect(privateKey);
-<br>await iu2u.deposit(&#039;10&#039;); // Deposit 10 XFI
+<br>await iu2u.deposit(&#039;10&#039;); // Deposit 10 U2U
 <br>await iu2u.sendCrossChain(&#039;ethereum&#039;, &#039;0x...&#039;, &#039;5&#039;); // Send 5 IU2U to Ethereum
 </code></pre></div></p>
 
@@ -3661,7 +3661,7 @@ async function withRetry(fn, maxRetries = 3, delay = 1000) {
 - Source chain verification ensures authenticity
 
 <h4>Token Backing Guarantee</h4>
-- 1:1 XFI backing for all IU2U tokens
+- 1:1 U2U backing for all IU2U tokens
 - Withdrawal guarantee through on-chain verification
 - No fractional reserve or unbacked minting
 

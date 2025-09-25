@@ -4,14 +4,14 @@
 
 ### What is IU2U Protocol?
 
-IU2U is a cross-chain infrastructure protocol that enables seamless token transfers, DEX aggregation, and gasless transactions across multiple blockchain networks. It uses a 1:1 XFI-backed token system and supports 37+ DEX protocols across 7 chains.
+IU2U is a cross-chain infrastructure protocol that enables seamless token transfers, DEX aggregation, and gasless transactions across multiple blockchain networks. It uses a 1:1 U2U-backed token system and supports 37+ DEX protocols across 7 chains.
 
 ### How does IU2U differ from other cross-chain protocols?
 
 **Key Differentiators:**
 - ✅ **DEX Aggregation**: Built-in support for 37+ DEX protocols
 - ✅ **Gasless Transactions**: IU2U-based gas credit system
-- ✅ **1:1 Backing**: Fully collateralized by native XFI tokens
+- ✅ **1:1 Backing**: Fully collateralized by native U2U tokens
 - ✅ **Unified Interface**: Single SDK for all supported chains
 - ✅ **MEV Protection**: Advanced routing algorithms
 
@@ -45,22 +45,22 @@ IU2U is a cross-chain infrastructure protocol that enables seamless token transf
 
 ## Technical Questions
 
-### How does the 1:1 XFI backing work?
+### How does the 1:1 U2U backing work?
 
-IU2U tokens are minted when users deposit native XFI on the CrossFi chain and burned when they withdraw. This ensures:
+IU2U tokens are minted when users deposit native U2U on the CrossFi chain and burned when they withdraw. This ensures:
 
-- **Full Collateralization**: Every IU2U token is backed by 1 XFI
+- **Full Collateralization**: Every IU2U token is backed by 1 U2U
 - **Transparency**: All reserves are verifiable on-chain
 - **Stability**: No inflation or arbitrary token creation
-- **Redemption**: Always redeemable for underlying XFI
+- **Redemption**: Always redeemable for underlying U2U
 
 ```mermaid
 flowchart LR
-    A[User deposits 100 XFI] --> B[Contract mints 100 IU2U]
+    A[User deposits 100 U2U] --> B[Contract mints 100 IU2U]
     B --> C[User bridges IU2U to other chains]
     C --> D[User returns 100 IU2U]
     D --> E[Contract burns 100 IU2U]
-    E --> F[User withdraws 100 XFI]
+    E --> F[User withdraws 100 U2U]
 ```
 
 ### What DEX protocols are supported?
@@ -364,9 +364,9 @@ See [Contributing Guide](contributing.md) for details.
 
 ### Is there a token distribution/airdrop?
 
-IU2U tokens are only created through XFI deposits - there is no pre-mining, ICO, or traditional token distribution. Tokens are earned by:
+IU2U tokens are only created through U2U deposits - there is no pre-mining, ICO, or traditional token distribution. Tokens are earned by:
 
-- Providing liquidity to XFI/IU2U pools
+- Providing liquidity to U2U/IU2U pools
 - Participating in governance (future)
 - Using the protocol (potential rewards)
 - Contributing to development

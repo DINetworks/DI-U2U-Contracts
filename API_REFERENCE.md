@@ -13,12 +13,12 @@
 
 ### Core Functions
 
-#### XFI ↔ IU2U Conversion
+#### U2U ↔ IU2U Conversion
 
 ```solidity
 function deposit() public payable onlyCrossfiChain
 ```
-**Description**: Deposit native XFI to mint equivalent IU2U tokens (1:1 ratio)
+**Description**: Deposit native U2U to mint equivalent IU2U tokens (1:1 ratio)
 - **Requirements**: Must be called on CrossFi chain
 - **Parameters**: None (amount specified in msg.value)
 - **Events**: `Deposited(address indexed user, uint256 amount)`
@@ -26,10 +26,10 @@ function deposit() public payable onlyCrossfiChain
 ```solidity
 function withdraw(uint256 amount_) public onlyCrossfiChain
 ```
-**Description**: Burn IU2U tokens to withdraw equivalent native XFI
+**Description**: Burn IU2U tokens to withdraw equivalent native U2U
 - **Requirements**: Must be called on CrossFi chain, sufficient IU2U balance
 - **Parameters**: 
-  - `amount_`: Amount of IU2U to burn (and XFI to receive)
+  - `amount_`: Amount of IU2U to burn (and U2U to receive)
 - **Events**: `Withdrawn(address indexed user, uint256 amount)`
 
 #### Cross-Chain Operations
@@ -111,7 +111,7 @@ function removeChain(string memory chainName) external onlyOwner
 
 ```solidity
 function isFullyBacked() external view returns (bool)
-function getXFIBalance() external view returns (uint256)
+function getU2UBalance() external view returns (uint256)
 function isCommandExecuted(bytes32 commandId) external view returns (bool)
 function getAllRelayers() external view returns (address[] memory)
 function getRelayerCount() external view returns (uint256)
@@ -565,9 +565,9 @@ error InvalidPriceData();            // Oracle returned invalid price
 
 ```solidity
 "Zero Value"                          // Deposit amount is zero
-"Not enough XFI"                      // Contract has insufficient XFI
+"Not enough U2U"                      // Contract has insufficient U2U
 "Not enough IU2U"                     // User has insufficient IU2U
-"Withdraw failed"                     // XFI transfer failed
+"Withdraw failed"                     // U2U transfer failed
 "Invalid payload hash"                // Payload doesn't match hash
 "Contract call failed"                // Target contract execution failed
 "Unsupported destination chain"       // Chain not in registry
@@ -584,8 +584,8 @@ error InvalidPriceData();            // Oracle returned invalid price
 
 | Function | Gas Cost | Notes |
 |----------|----------|-------|
-| `deposit()` | ~50,000 | XFI to IU2U conversion |
-| `withdraw()` | ~55,000 | IU2U to XFI conversion |
+| `deposit()` | ~50,000 | U2U to IU2U conversion |
+| `withdraw()` | ~55,000 | IU2U to U2U conversion |
 | `callContract()` | ~80,000 | Cross-chain call initiation |
 | `callContractWithToken()` | ~100,000 | Cross-chain call with token burn |
 | `execute()` | ~150,000 + target cost | Command execution by relayer |

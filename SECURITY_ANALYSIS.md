@@ -37,7 +37,7 @@
 - Source chain verification ensures authenticity
 
 #### Token Backing Guarantee
-- 1:1 XFI backing for all IU2U tokens
+- 1:1 U2U backing for all IU2U tokens
 - Withdrawal guarantee through on-chain verification
 - No fractional reserve or unbacked minting
 

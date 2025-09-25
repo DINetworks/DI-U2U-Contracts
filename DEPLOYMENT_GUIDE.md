@@ -28,7 +28,7 @@
 
 | Chain | Estimated Gas Cost | Purpose |
 |-------|-------------------|---------|
-| CrossFi | 0.1 XFI | Core contracts deployment |
+| CrossFi | 0.1 U2U | Core contracts deployment |
 | Ethereum | 0.05 ETH | Gateway and vault deployment |
 | BSC | 0.01 BNB | Gateway deployment |
 | Polygon | 50 MATIC | Gateway deployment |
@@ -429,7 +429,7 @@ npx hardhat run scripts/update-chains.js --network crossfi
 ### 3. Initial Token Supply
 
 ```bash
-# Deposit initial XFI to create IU2U supply
+# Deposit initial U2U to create IU2U supply
 npx hardhat run scripts/initial-deposit.js --network crossfi
 ```
 
@@ -489,7 +489,7 @@ Expected responses:
 // Test script
 const iu2u = await ethers.getContractAt("IU2U", iu2uAddress);
 
-// Deposit XFI for IU2U
+// Deposit U2U for IU2U
 await iu2u.deposit({ value: ethers.parseEther("1.0") });
 
 // Send cross-chain

@@ -23,6 +23,7 @@ flowchart TB
         Target
         PriceFeed
     end
+
 ```
 
 ## Core Contracts
@@ -83,6 +84,7 @@ flowchart LR
     D --> E[Value Validation]
     E --> F[Execution]
     F --> G[Credit Deduction]
+    
 ```
 
 ## Technical Specifications

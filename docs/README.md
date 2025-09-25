@@ -26,7 +26,7 @@ IU2U is a cross-chain protocol that facilitates:
 
 ### 🔗 Cross-Chain Infrastructure
 - Supports 7 major blockchain networks
-- 1:1 XFI backing mechanism
+- 1:1 U2U backing mechanism
 - Decentralized relayer network
 
 ### 🔄 DEX Aggregation
@@ -63,7 +63,7 @@ flowchart TB
     F --> G[Destination Chain]
     G --> H[IU2U Gateway]
     H --> I[Target Contract]
-    
+
 ```
 
 ## Getting Help
