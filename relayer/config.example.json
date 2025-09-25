@@ -1,0 +1,13 @@
+{
+  "relayerPrivateKey": "0x1234567890123456789012345678901234567890123456789012345678901234",
+  "pollingInterval": 5000,
+  "gasLimit": 500000,
+  "gasPrice": "20",
+  "maxRetries": 3,
+  "retryDelayMs": 30000,
+  "compensationEnabled": true,
+  "maxBlockRange": 50,
+  "healthCheckPort": 3000,
+  "logLevel": "info",
+  "enableMetrics": true
+}

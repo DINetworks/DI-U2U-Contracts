@@ -1,0 +1,18 @@
+root: ./docs
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+title: IU2U Protocol Documentation
+description: Comprehensive documentation for the IU2U cross-chain protocol
+
+integrations:
+  github:
+    owner: DINetworks
+    repo: IU2U-Contracts
+    branch: main
+
+format:
+  markdown:
+    mermaid: true

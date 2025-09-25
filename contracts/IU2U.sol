@@ -1,0 +1,167 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract IU2U is ERC20, Ownable {
+    uint256 u2u_chainid = 2484; // 2484 is U2U Nebulas Testnet
+
+    // Authorized gateway for cross-chain operations
+    address public gateway;
+
+    // Native U2U <-> IU2U conversion events
+    event Deposited(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
+
+    constructor(address owner_)
+        ERC20("Interoperable U2U", "IU2U")
+        Ownable()
+    {
+        // Transfer ownership to the specified owner
+        _transferOwnership(owner_);
+    }
+
+    modifier onlyU2UChain() {
+        require(block.chainid == u2u_chainid, "Not U2U Chain");
+        _;
+    }
+
+    /**
+     * @dev Deposit native U2U tokens to mint equivalent IU2U tokens (1:1 ratio)
+     *
+     * This function allows users to lock their native U2U tokens in the contract
+     * and receive an equivalent amount of IU2U tokens. This is the entry point
+     * for users to participate in cross-chain transfers using the GMP protocol.
+     *
+     * Requirements:
+     * - Must be called on U2U chain (chainId 2484 for testnet)
+     * - Must send a positive amount of U2U (msg.value > 0)
+     * - U2U tokens are locked in the contract and cannot be withdrawn by contract owner
+     *
+     * Process:
+     * 1. Validates the sent U2U amount is greater than zero
+     * 2. Mints equivalent IU2U tokens to the sender's address
+     * 3. U2U tokens remain locked in the contract as collateral
+     *
+     * Example usage:
+     * ```
+     * // Deposit 100 U2U to get 100 IU2U
+     * iu2u.deposit{value: 100 ether}();
+     * ```
+     *
+     * @notice This creates a 1:1 backing between U2U and IU2U tokens
+     * @notice Users can later withdraw their U2U by burning IU2U tokens
+     */
+    function deposit() public payable onlyU2UChain {
+        require(msg.value > 0, 'Zero Value');
+
+        address account = msg.sender;
+        _mint(account, msg.value);
+
+        emit Deposited(account, msg.value);
+    }
+
+    /**
+     * @dev Withdraw native U2U tokens by burning equivalent IU2U tokens (1:1 ratio)
+     *
+     * This function allows users to redeem their locked U2U tokens by burning
+     * their IU2U tokens. This is the exit mechanism for users who want to
+     * convert their cross-chain IU2U tokens back to native U2U.
+     *
+     * Requirements:
+     * - Must be called on U2U chain (chainId 2484 for testnet)
+     * - User must have sufficient IU2U token balance
+     * - Contract must have sufficient U2U balance to honor the withdrawal
+     * - Amount must be greater than zero
+     *
+     * Security measures:
+     * - Burns IU2U tokens before transferring U2U (checks-effects-interactions pattern)
+     * - Uses low-level call for U2U transfer with success verification
+     * - Prevents reentrancy by burning tokens first
+     *
+     * Process:
+     * 1. Validates the withdrawal amount
+     * 2. Checks user has sufficient IU2U balance
+     * 3. Checks contract has sufficient U2U to transfer
+     * 4. Burns the specified amount of IU2U tokens from user's balance
+     * 5. Transfers equivalent U2U to the user
+     * 6. Reverts entire transaction if U2U transfer fails
+     *
+     * Example usage:
+     * ```
+     * // Withdraw 50 U2U by burning 50 IU2U
+     * iu2u.withdraw(50 ether);
+     * ```
+     *
+     * @param amount_ The amount of IU2U tokens to burn and equivalent U2U to withdraw
+     * @notice This maintains the 1:1 backing ratio between U2U and IU2U
+     * @notice Failed U2U transfers will revert the entire transaction
+     */
+    function withdraw(uint256 amount_) public onlyU2UChain {
+        address account = msg.sender;
+        require(amount_ > 0, "Zero amount");
+        require(address(this).balance >= amount_, "Not enough U2U");
+        require(balanceOf(account) >= amount_, "Not enough IU2U");
+
+        _burn(account, amount_);
+        (bool success, ) = address(payable(account)).call{value: amount_}("");
+        require(success, "Withdraw failed");
+
+        emit Withdrawn(account, amount_);
+    }
+
+    /**
+     * @dev Mint tokens (for cross-chain transfers from gateway)
+     * @param to The address to mint tokens to
+     * @param amount The amount of tokens to mint
+     */
+    function mint(address to, uint256 amount) external {
+        require(msg.sender == owner() || msg.sender == gateway, "Unauthorized");
+        require(amount > 0, "Amount must be greater than zero");
+        require(to != address(0), "Invalid recipient");
+
+        _mint(to, amount);
+    }
+
+    /**
+     * @dev Burn tokens (for cross-chain transfers from gateway)
+     * @param from The address to burn tokens from
+     * @param amount The amount of tokens to burn
+     */
+    function burn(address from, uint256 amount) external {
+        require(msg.sender == owner() || msg.sender == gateway, "Unauthorized");
+        require(amount > 0, "Amount must be greater than zero");
+        require(from != address(0), "Invalid sender");
+        require(balanceOf(from) >= amount, "Insufficient balance");
+
+        _burn(from, amount);
+    }
+
+    /**
+     * @dev Get the current U2U backing ratio
+     * @return The amount of U2U locked in the contract
+     */
+    function getU2UBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+
+    /**
+     * @dev Set the authorized gateway address
+     * @param gateway_ The gateway contract address
+     */
+    function setGateway(address gateway_) external onlyOwner {
+        require(gateway_ != address(0), "Invalid gateway address");
+        gateway = gateway_;
+    }
+
+    /**
+     * @dev Check if the contract is fully backed (U2U balance >= IU2U supply)
+     * @return True if fully backed, false otherwise
+     */
+    function isFullyBacked() external view returns (bool) {
+        return address(this).balance >= totalSupply();
+    }
+
+    receive() external payable {}
+}
