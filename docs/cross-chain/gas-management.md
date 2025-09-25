@@ -38,6 +38,7 @@ flowchart TB
     GV --> DE
     DE --> GM
     GM --> GR
+    
 ```
 
 ## Gas Payment Models

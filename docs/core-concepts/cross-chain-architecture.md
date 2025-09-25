@@ -36,6 +36,7 @@ flowchart TB
     MS --> DG
     DG --> DC
     DC --> DE
+
 ```
 
 ## Core Components
@@ -175,6 +176,7 @@ flowchart LR
     C --> D[Testnet Testing]
     D --> E[Mainnet Deployment]
     E --> F[Relayer Activation]
+    
 ```
 
 ### 3. Configuration Parameters

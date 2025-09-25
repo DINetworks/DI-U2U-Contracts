@@ -41,6 +41,7 @@ flowchart LR
     B --> C[Cross-Chain Transfer]
     C --> D[IU2U Burn]
     D --> E[U2U Release]
+    
 ```
 
 1. **Minting**: IU2U tokens are minted when U2U is deposited into the protocol

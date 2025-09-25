@@ -39,6 +39,7 @@ flowchart TB
     RN --> MS
     MS --> DG
     DG --> DC
+    
 ```
 
 ## Relayer Roles

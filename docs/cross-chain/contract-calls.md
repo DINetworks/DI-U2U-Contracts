@@ -29,6 +29,7 @@ sequenceDiagram
     Gateway_B->>Target: Call target function
     Target->>Gateway_B: Return result
     Gateway_B->>Gateway_B: Emit Executed event
+    
 ```
 
 ## Implementation Patterns
