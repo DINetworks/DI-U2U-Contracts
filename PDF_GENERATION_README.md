@@ -20,11 +20,15 @@ node generate-html.js
 A professionally formatted PDF containing:
 
 ### 📖 Complete Documentation Sections
-1. **Technical Overview** - System architecture and components
-2. **API Reference** - Complete contract API documentation  
-3. **Deployment Guide** - Step-by-step deployment instructions
-4. **Integration Examples** - Frontend and smart contract examples
-5. **Security Analysis** - Comprehensive security model
+1. **Getting Started** - Installation, quick start, and configuration
+2. **Core Concepts** - Protocol overview, IU2U token, architecture, relayers, security
+3. **Gasless Meta Transactions** - MetaTx system, gateway, credit vault, EIP-712 signatures
+4. **DEX Aggregation** - 37+ protocol support, routing algorithms, quote systems
+5. **Cross-Chain Operations** - Message passing, token transfers, contract calls
+6. **API Reference** - Complete contract APIs for all components
+7. **Integration Guides** - Frontend, smart contracts, deployment, testing, security
+8. **Examples** - Real-world integration patterns and use cases
+9. **Resources** - FAQ, troubleshooting, and additional resources
 
 ### 🎨 Professional Features
 - **Cover Page** with project branding
@@ -132,9 +136,10 @@ The generated PDF will be:
 ## 📝 File Sizes
 
 Typical output sizes:
-- **HTML File**: ~2-4 MB
-- **PDF File**: ~3-6 MB  
-- **Total Content**: 100+ pages
+- **HTML File**: ~8-12 MB
+- **PDF File**: ~10-15 MB
+- **Total Content**: 200+ pages
+- **Documentation Sections**: 40+ comprehensive guides
 
 ## 🎯 Use Cases
 
