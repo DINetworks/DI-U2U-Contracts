@@ -5,7 +5,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract IU2U is ERC20, Ownable {
-    uint256 u2u_chainid = 39; // 39 is U2U Solaris Mainnet
+    uint256 u2u_chainid = 2484; // 2484 is U2U Nebulas Mainnet
 
     // Authorized gateway for cross-chain operations
     address public gateway;
@@ -35,7 +35,7 @@ contract IU2U is ERC20, Ownable {
      * for users to participate in cross-chain transfers using the GMP protocol.
      *
      * Requirements:
-     * - Must be called on U2U chain (chainId 39 for mainnet)
+     * - Must be called on U2U chain (chainId 2484 for testnet)
      * - Must send a positive amount of U2U (msg.value > 0)
      * - U2U tokens are locked in the contract and cannot be withdrawn by contract owner
      *
@@ -70,7 +70,7 @@ contract IU2U is ERC20, Ownable {
      * convert their cross-chain IU2U tokens back to native U2U.
      *
      * Requirements:
-     * - Must be called on U2U chain (chainId 39 for mainnet)
+     * - Must be called on U2U chain (chainId 2484 for testnet)
      * - User must have sufficient IU2U token balance
      * - Contract must have sufficient U2U balance to honor the withdrawal
      * - Amount must be greater than zero

@@ -12,14 +12,14 @@ async function main() {
     console.log("Account balance:", (await ethers.provider.getBalance(deployer.address)).toString());
 
     // Deploy IU2U token contract
-    // console.log("\n1. Deploying IU2U Token...");
-    // const IU2UToken = await ethers.getContractFactory("IU2U");
-    // const iu2uToken = await IU2UToken.deploy(deployer.address);
-    // await iu2uToken.waitForDeployment();
-    // const iu2uTokenAddress = await iu2uToken.getAddress();
-    // console.log("IU2U Token deployed to:", iu2uTokenAddress);
+    console.log("\n1. Deploying IU2U Token...");
+    const IU2UToken = await ethers.getContractFactory("IU2U");
+    const iu2uToken = await IU2UToken.deploy(deployer.address);
+    await iu2uToken.waitForDeployment();
+    const iu2uTokenAddress = await iu2uToken.getAddress();
+    console.log("IU2U Token deployed to:", iu2uTokenAddress);
 
-    const iu2uTokenAddress = "0x9649a304bD0cd3c4dbe72116199990df06d87329"
+    // const iu2uTokenAddress = "0xA3A350214b699578bF9df1Eeb743ab7C139119d6"
     
     // Deploy IU2U Gateway contract
     console.log("\n2. Deploying IU2U Gateway...");
@@ -31,7 +31,7 @@ async function main() {
 
     // Set gateway address in IU2U token
     console.log("\n3. Setting gateway address in IU2U token...");
-    const iu2uToken = await ethers.getContractAt("IU2U", iu2uTokenAddress);
+    // const iu2uToken = await ethers.getContractAt("IU2U", iu2uTokenAddress);
     await iu2uToken.setGateway(iu2uGatewayAddress);
     console.log("✅ Gateway address set in IU2U token");
 
@@ -80,8 +80,8 @@ async function main() {
 
     console.log("\n6. Verification Commands:");
     console.log("========================");
-    console.log(`npx hardhat verify --network u2u-nebulas-testnet ${iu2uTokenAddress} "${deployer.address}"`);
-    console.log(`npx hardhat verify --network u2u-nebulas-testnet ${iu2uGatewayAddress} "${deployer.address}" "${iu2uTokenAddress}"`);
+    console.log(`npx hardhat verify --network u2u-solaris-mainnet ${iu2uTokenAddress} "${deployer.address}"`);
+    console.log(`npx hardhat verify --network u2u-solaris-mainnet ${iu2uGatewayAddress} "${deployer.address}" "${iu2uTokenAddress}"`);
 
     console.log("\n7. Next Steps:");
     console.log("========================");

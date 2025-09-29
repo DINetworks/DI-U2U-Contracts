@@ -47,13 +47,13 @@ Update `config.json` with your chain details:
     "u2u-nebulas-testnet": {
       "rpc": "https://rpc-nebulas-testnet.uniultra.xyz/",
       "chainId": 2484,
-      "iu2uAddress": "0xYourIU2UContractAddress",
+      "iu2uAddress": "0xIU2UContractAddress",
       "blockConfirmations": 1
     },
     "ethereum": {
       "rpc": "https://mainnet.infura.io/v3/YOUR_PROJECT_ID",
       "chainId": 1,
-      "iu2uAddress": "0xYourIU2UContractAddress",
+      "iu2uAddress": "0xIU2UContractAddress",
       "blockConfirmations": 12
     }
   },

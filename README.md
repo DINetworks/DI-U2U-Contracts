@@ -222,8 +222,8 @@ Gasless transaction infrastructure that enables users to execute transactions wi
 ### 1. Deploy IU2U Protocol
 
 ```sh
-# Deploy on U2U testnet
-npx hardhat run scripts/deploy-gmp.js --network u2u-nebulas-testnet
+# Deploy on U2U Mainnet
+npx hardhat run scripts/deploy-gmp.js --network u2u-solaris-mainnet
 
 # Deploy on additional chains (Ethereum, Polygon, BSC, etc.)
 npx hardhat run scripts/deploy-gmp.js --network ethereum

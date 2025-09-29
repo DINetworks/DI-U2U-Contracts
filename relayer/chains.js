@@ -8,10 +8,10 @@ const {
   avalanche,
 } = require("viem/chains");
 
-// U2U Nebulas Testnet
-const u2uTestnet = {
-  id: 2484,
-  name: "U2U Nebulas Testnet",
+// U2U Solaris Mainnet
+const u2uMainnet = {
+  id: 39,
+  name: "U2U Solaris Mainnet",
   nativeCurrency: {
     decimals: 18,
     name: "U2U",
@@ -19,13 +19,13 @@ const u2uTestnet = {
   },
   rpcUrls: {
     default: {
-      http: ["https://rpc-nebulas-testnet.uniultra.xyz/"],
+      http: ["https://rpc-mainnet.u2u.xyz/"],
     },
   },
   blockExplorers: {
     default: {
       name: "U2U Scan",
-      url: "https://testnet.u2uscan.xyz",
+      url: "https://u2uscan.xyz",
     },
   },
   testnet: true,
@@ -38,7 +38,7 @@ const CHAINS = {
     bsc,
     polygon,
     base,
-    "u2u-nebulas-testnet": u2uTestnet
+    "u2u-solaris-mainnet": u2uMainnet
 }
 
 module.exports = CHAINS

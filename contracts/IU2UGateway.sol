@@ -14,7 +14,7 @@ contract IU2UGateway is IIU2UGateway, Ownable {
     using SignatureChecker for address;
     using ECDSA for bytes32;
 
-    uint256 u2u_chainid = 2484; // 2484 is U2U Nebulas Testnet
+    uint256 u2u_chainid = 39; // 39 is U2U Solaris Mainnet
     IU2U public immutable iu2uToken;
     EnumerableSet.AddressSet private relayers;
 
@@ -49,8 +49,8 @@ contract IU2UGateway is IIU2UGateway, Ownable {
         iu2uToken = IU2U(iu2uToken_);
 
         // Initialize default chains
-        chainIds["u2u-nebulas-testnet"] = 2484;
-        chainNames[2484] = "u2u-nebulas-testnet";
+        chainIds["u2u-solaris-mainnet"] = u2u_chainid;
+        chainNames[u2u_chainid] = "u2u-solaris-mainnet";
         chainIds["ethereum"] = 1;
         chainNames[1] = "ethereum";
         chainIds["bsc"] = 56;
