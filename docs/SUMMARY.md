@@ -10,6 +10,7 @@
 ## Core Concepts
 
 * [Protocol Overview](core-concepts/protocol-overview.md)
+* [Protocol Architecture](core-concepts/architecture.md)
 * [IU2U Token](core-concepts/iu2u-token.md)
 * [Cross-Chain Architecture](core-concepts/cross-chain-architecture.md)
 * [Relayer Network](core-concepts/relayer-network.md)
