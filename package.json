@@ -9,7 +9,7 @@
     "compile": "hardhat compile",
     "clean": "hardhat clean",
     "deploy:metatx": "hardhat run scripts/deploy-metatx.js --network u2u-solaris-mainnet",
-    "deploy:gmp": "hardhat run scripts/deploy-gmp.js --network u2u-solaris-mainnet",
+    "deploy:gmp": "hardhat run scripts/deploy-gmp.js --network arbitrum",
     "whitelist-relayer": "hardhat run scripts/whitelist-relayer.js",
     "start:gmp-relayer": "cd relayer && npm run start:gmp",
     "extract-build": "node scripts/extract-build-info.js",

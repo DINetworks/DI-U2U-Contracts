@@ -1,5 +1,6 @@
 require('dotenv').config();
 require("@nomicfoundation/hardhat-ethers");
+require("@nomicfoundation/hardhat-verify");
 require("hardhat-contract-sizer");
 
 module.exports = {
@@ -82,7 +83,25 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY
+    apiKey: process.env.ETHERSCAN_API_KEY,
+    customChains: [
+      {
+        network: "u2u-solaris-mainnet",
+        chainId: 39,
+        urls: {
+          apiURL: "https://u2uscan.xyz/api",     // block explorer API
+          browserURL: "https://u2uscan.xyz",     // explorer base URL
+        },
+      },
+      {
+        network: "avalanche",
+        chainId: 43114,
+        urls: {
+          apiURL: "https://api.routescan.io/v2/network/mainnet/evm/43114/etherscan",
+          browserURL: "https://avalanche.routescan.io"
+        }
+      }
+    ]
   },
   // Add paths if needed
   paths: {

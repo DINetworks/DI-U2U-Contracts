@@ -38,7 +38,11 @@ const CHAINS = {
     bsc,
     polygon,
     base,
-    "u2u-solaris-mainnet": u2uMainnet
+    optimism,
+    avalanche,
+    arbitrum,
+    mainnet,
+    "u2u-solaris-mainnet": u2uMainnet // Add U2U Solaris Mainnet
 }
 
 module.exports = CHAINS

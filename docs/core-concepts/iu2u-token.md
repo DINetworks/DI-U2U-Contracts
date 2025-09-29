@@ -68,13 +68,15 @@ The IU2U token uses a sophisticated bridge mechanism:
 
 | Chain | Network ID | IU2U Address | Status |
 |-------|------------|--------------|--------|
-| U2U Nebulas Testnet | 2484 | `0x...` | Native |
+| U2U Nebulas Testnet | 2484 | `0x2551f9E86a20bf4627332A053BEE14DA623d1007` | Native |
+| U2U Solaris Mainnet | 39 | `0xA3A350214b699578bF9df1Eeb743ab7C139119d6` | Native |
 | Ethereum | 1 | `0x...` | Deployed |
-| BSC | 56 | `0x...` | Deployed |
-| Polygon | 137 | `0x...` | Deployed |
-| Arbitrum | 42161 | `0x...` | Deployed |
-| Optimism | 10 | `0x...` | Deployed |
-| Avalanche | 43114 | `0x...` | Deployed |
+| BSC | 56 | `0x365235b4ea2F5439f27b10f746C52B0B47c33761` | Deployed |
+| Polygon | 137 | `0x9649a304bD0cd3c4dbe72116199990df06d87329` | Deployed |
+| Base | 8453 | `0xF69C5FB9359a4641469cd457412C7086fd32041D` | Deployed |
+| Arbitrum | 42161 | `0x48A4C62Af369D37c7411AcB2aF59c87E0A7a0983` | Deployed |
+| Optimism | 10 | `0x5814C4a96532618c31deb231bFdEFE443f8474b8` | Deployed |
+| Avalanche | 43114 | 0x9E5e98FFaD3F779Ed3459631694788E38B822261` | Deployed |
 
 ## Smart Contract Architecture
 
@@ -198,17 +200,17 @@ IU2U holders can participate in:
 
 ## Roadmap
 
-### Short Term (Q1-Q2 2025)
+### Short Term (Q3-Q4 2025)
 - [ ] Additional DEX integrations
 - [ ] Mobile wallet support
 - [ ] Gas optimization improvements
 
-### Medium Term (Q3-Q4 2025)
+### Medium Term (Q1-Q2 2026)
 - [ ] Layer 2 expansion
 - [ ] Institutional custody support  
 - [ ] Advanced trading features
 
-### Long Term (2026+)
+### Long Term (Q3 2026 ~)
 - [ ] Non-EVM chain support
 - [ ] Native staking mechanisms
 - [ ] Advanced governance features

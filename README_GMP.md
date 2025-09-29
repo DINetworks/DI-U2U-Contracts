@@ -27,7 +27,14 @@ IU2U (Interoperable U2U) is a cross-chain protocol that enables seamless token t
 | IU2U Token | `0x2551f9E86a20bf4627332A053BEE14DA623d1007` |
 | IU2U Gateway | `0x7Ccba78c7224577DDDEa5B3302b81db7915e5377` |
 
-### Polygon Mainnet (Chain ID: 1)
+### U2U Solaris Mainnet (Chain ID: 39)
+
+| Contract | Address |
+|----------|---------|
+| IU2U Token | `0xA3A350214b699578bF9df1Eeb743ab7C139119d6` |
+| IU2U Gateway | `0x560d354E9f690f9749594840120B4b5903c20E07` |
+
+### Polygon Mainnet (Chain ID: 137)
 
 | Contract | Address |
 |----------|---------|
@@ -41,12 +48,33 @@ IU2U (Interoperable U2U) is a cross-chain protocol that enables seamless token t
 | IU2U Token | `0x365235b4ea2F5439f27b10f746C52B0B47c33761` |
 | IU2U Gateway | `0xe4A31447871c39eD854279acCEAeB023e79dDCC5` |
 
-### Base Mainnet (Chain ID: 56)
+### Base Mainnet (Chain ID: 8453)
 
 | Contract | Address |
 |----------|---------|
 | IU2U Token | `0xF69C5FB9359a4641469cd457412C7086fd32041D` |
 | IU2U Gateway | `0x9649a304bD0cd3c4dbe72116199990df06d87329` |
+
+### Avalanche C (Chain ID: 43114)
+
+| Contract | Address |
+|----------|---------|
+| IU2U Token | `0x9E5e98FFaD3F779Ed3459631694788E38B822261` |
+| IU2U Gateway | `0x2e33C951e4cdDbccB5945C9f32095FccD1171259` |
+
+### Optimism (Chain ID: 10)
+
+| Contract | Address |
+|----------|---------|
+| IU2U Token | `0x5814C4a96532618c31deb231bFdEFE443f8474b8` |
+| IU2U Gateway | `0xeD93D637b13Ca7f61875BB31386E9a54Bab51C9B` |
+
+### Arbitrum (Chain ID: 42161)
+
+| Contract | Address |
+|----------|---------|
+| IU2U Token | `0x48A4C62Af369D37c7411AcB2aF59c87E0A7a0983` |
+| IU2U Gateway | `0x9E5e98FFaD3F779Ed3459631694788E38B822261` |
 
 *Note: Update addresses after deployment*
 
